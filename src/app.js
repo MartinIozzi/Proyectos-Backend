@@ -8,7 +8,7 @@ app.use(express.static('public'));
 app.use(express.json())
 app.use(express.urlencoded({extended: true}));
 
-const port = console.log("Listening Port: 8080");
+const port = 8080;
 
 
 //haciendo el productRouter metodo post, seguir viendo
@@ -16,4 +16,4 @@ app.use('/api/products', productRouter);
 
 app.use('/api/carts', cartRouter);
 
-app.listen(8080, (port));
+app.listen(8080, console.log(`Listening Port: ${port}`));

@@ -38,7 +38,6 @@ productRouter.get("/:pid" , async (req, res)=> {
     }
 });
 
-//en este post, lo unico que falta es agregarle al producto, que se agregue desde el body, una id autoincrementable, como todos los demas productos.
 productRouter.post("/", async (req, res) => {
     try {
         let addedProduct = req.body;
@@ -57,7 +56,6 @@ productRouter.put('/:pid', async (req, res) => {
     } catch (e) {
 		res.status(400).send({e});
     }
-//put confirmado que anda bien, en base a los datos actualizados desde el thunderclient, seguir con el DELETE.
 })
 
 productRouter.delete('/:pid' , async (req, res) => {
