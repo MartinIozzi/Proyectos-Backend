@@ -1,0 +1,21 @@
+[
+  {
+    "name": "a",
+    "description": "a",
+    "price": "1",
+    "code": "7",
+    "stock": "1",
+    "type": "a",
+    "id": "1"
+  },
+  {
+    "name": "a",
+    "description": "a",
+    "price": "1",
+    "code": "a",
+    "stock": "1",
+    "type": "a",
+    "img": "43e7126dc55c55efbe6c04ef4b5b55a4.jpg",
+    "id": "2"
+  }
+]

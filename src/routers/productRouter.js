@@ -1,6 +1,5 @@
-import fs from 'fs';
 import { Router } from "express";
-import ProductManager from '../productManager.js'
+import ProductManager from '../controllers/productManager.js'
 
 let productManager = new ProductManager();
 
@@ -15,14 +14,15 @@ productRouter.get("/", async (req, res) => {
             res.send(await products.slice(0, limit));
             return;
         }
-        if(!type || (type !== "pc" && type !== "phone" && type !== "celular" && type !== "computadora")) { 
+        /* if(!type || (type !== "pc" && type !== "phone" && type !== "celular" && type !== "computadora")) */
+        if(!type || (type !== "pc" && type !== "phone" && type !== "celular" && type !== "computadora" /*ver esto que solo toma los tipos codeados y no los que se pasan por el req.body*/)) { 
             res.send(products)
         } else {
             let productsFilter = products.filter(element => element.type === type);
             res.send (productsFilter);
         }
-    } catch(error){
-        console.log(error)
+    } catch(e){
+		res.status(400).send({e});
     }
 })
 
@@ -34,7 +34,7 @@ productRouter.get("/:pid" , async (req, res)=> {
         });
         res.send(productID);
     } catch (e){
-        console.log(e);
+		res.status(400).send({e});
     }
 });
 
@@ -42,17 +42,31 @@ productRouter.get("/:pid" , async (req, res)=> {
 productRouter.post("/", async (req, res) => {
     try {
         let addedProduct = req.body;
-		res.status(201).send(await productManager.pushProducts(addedProduct));
-    } catch (error) {
-        console.log(error);
+        await productManager.pushProducts(addedProduct)
+		res.status(201).send(await productManager.getProducts());
+    } catch (e) {
+		res.status(400).send({e});
     }
 });
-        /*
-        let products = await productManager.getProducts()
-        let arrayProducts = []
-        const addedProducts = req.body;
-        arrayProducts.push(addedProducts)
-        arrayProducts.push(products)
-        //fs.writeFileSync(productManager.path, 'utf-8')
-        res.status(201).send(products)*/
+
+productRouter.put('/:pid', async (req, res) => {
+    try {
+        let id = parseInt(req.params.pid);
+        let addedProduct = req.body;
+        res.status(200).send(await productManager.updateProduct(id, addedProduct))
+    } catch (e) {
+		res.status(400).send({e});
+    }
+//put confirmado que anda bien, en base a los datos actualizados desde el thunderclient, seguir con el DELETE.
+})
+
+productRouter.delete('/:pid' , async (req, res) => {
+    try { 
+        let id = (req.params.pid);
+        res.status(200).send(await productManager.deleteProduct(id))
+    } catch (e) {
+		res.status(400).send({e});
+    }
+})
+
 export {productRouter};
