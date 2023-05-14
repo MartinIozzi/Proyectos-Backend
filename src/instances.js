@@ -1,5 +1,5 @@
-import ProductsController from '../controllers/ProductsController.js';
-import CartsController from '../controllers/CartsController.js';
+import CartManager from "./controllers/cartManager";
+import ProductManager from "./controllers/productManager";
 
-export const listOfProducts = new ProductsController();
-export const listOfCarts = new CartsController();
+export const listOfProducts = new ProductManager();
+export const listOfCarts = new CartManager();
