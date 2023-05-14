@@ -1,7 +1,4 @@
 import fs from 'fs';
-import ProductManager from "./productManager.js";
-
-let productManager = new ProductManager();
 
 class CartManager {
     constructor() {
@@ -35,30 +32,33 @@ class CartManager {
     };
 
     async addCart(cartId, product){
-        let index = this.products.findIndex(carrito => carrito.id == cartId);
-        if(index == -1){
+        let index = this.products.findIndex(carrito => carrito.id == cartId);   //busca la id dentro de this.products, e iguala el valor de la id dentro del mismo a cartId
+        if(index == -1){    //verificamos, si el carrito no existe, crea un array que contenga esos datos
             this.id++;
             let carrito = {
-                cart: [product],    //esto es lo mismo que pushear el producto abajo
+                cart: [],
                 id: this.id
             }
-            product.quantity = 1;
-            this.products.push(carrito);
-            this.updateCarts();
+            product.quantity = 1;   //para que cuando se crea el producto, se identifique que el valor sea 1
+            cart.push(product)  //se pushea el producto dentro del array de cart, el cual está en el objeto creado
+            this.products.push(carrito);    //se pushea el array de this.products al carrito, para que lo muestre como un objeto dentro del array
+            this.updateCarts(); //se escriben los datos en el this.path
             return;
         }
-
-        let carritoUsuario = this.products[index].cart;
-        let indexProducto = carritoUsuario.findIndex(producto => producto.id == product.id)
-        if(indexProducto == -1){
-            product.quantity = 1;
-            this.products[index].cart.push(product)
-            return this.updateCarts();
+        //cuando el producto se crea:
+        let carritoUsuario = this.products[index].cart; //se crea un variable, toma el array, pone el id de cart y lo muestra en cart
+        let indexProducto = carritoUsuario.findIndex(producto => producto.id == product.id) // busca por index, el valor id de carritoUsuario, para igualarlo a product.id, el cual es la id pasada por params
+        //verificamos
+        if(indexProducto == -1){    //si indexProduct es igual a -1
+            product.quantity = 1;   //se crea un quantity de 1
+            this.products[index].cart.push(product) //se busca por index, en el array, el carrito seleccionado desde el params, y pushea el producto que antes fue definido, como la id, en la variable indexProducto
+            return this.updateCarts();  //se retorna para que escriba los datos en el json
         }
-
-        let cantidad = carritoUsuario[indexProducto].quantity + 1
-        this.products[index].cart[indexProducto].quantity = cantidad
-        this.updateCarts();
+        //quantity
+        let cantidad = carritoUsuario[indexProducto].quantity + 1   //toma el array del cart que se seleccione y el id de los productos seleccionados y le suma la cantidad de 1
+        this.products[index].cart[indexProducto].quantity = cantidad    /* toma el array de this.products y el array seleccionado por la variable index; luego toma cart, 
+        selecciona la id del producto y eso lo iguala a la cantidad que se le sumó en la variable anterior */
+        this.updateCarts(); //escribe los productos dentro del json.
     }
 }
 
