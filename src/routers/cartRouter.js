@@ -6,8 +6,7 @@ const cartManager = new CartManager();
 
 cartRouter.post('/',async (req, res) => {
     try {
-        await cartManager.addCart()
-        res.status(201).send(await cartManager.getCart())
+        res.status(201).send(await cartManager.addCart())
     } catch (e) {
         res.status(400).send({e});
     }
@@ -29,7 +28,7 @@ cartRouter.post('/:cid/products/:pid' , async (req, res) => {
         let product = {
             id: req.params.pid
         }
-        await cartManager.addToCart(req.params.cid, product)
+        await cartManager.addProdToCart(req.params.cid, product)
         res.status(201).send(await cartManager.getCart())
     } catch (e) {
         res.status(400).send({e});

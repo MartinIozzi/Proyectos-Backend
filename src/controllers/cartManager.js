@@ -11,7 +11,7 @@ class CartManager {
                 this.path,
                 JSON.stringify([]))
         }else{
-            //this.products = JSON.parse(fs.readFileSync(this.path, 'utf-8'))
+            this.products = JSON.parse(fs.readFileSync(this.path, 'utf-8'))
         }
         let index = this.products.length - 1   //detecta el ultimo index y asigna la id del mismo.
         if(index >= 0){
@@ -34,32 +34,31 @@ class CartManager {
 
     async addCart(){
         try {
-            const readCart = this.getCart()
+            let cartArray = this.products
             this.id++;
             let carrito = {
                 cart: [],
                 id: this.id
             }
-            readCart.push(carrito);
+            cartArray.push(carrito);
             this.updateCarts();
-            return readCart;
+            return cartArray;
         }
         catch(e) {
-            console.log(e);
+            console.log("error en el addCart", e);
         }
     };
 
-    addToCart(cartId, product){
+    addProdToCart(cartId, product){
         try {
             let index = this.products.findIndex(carrito => carrito.id == cartId);   //busca la id dentro de this.products, e iguala el valor de la id dentro del mismo a cartId
         if(index == -1){    //verificamos, si el carrito no existe, crea un array que contenga esos datos
             this.id++;
             let carrito = {
-                cart: [],
+                cart: [product],    //se pushea el producto dentro del array de cart, el cual está en el objeto creado
                 id: this.id
             }
             product.quantity = 1;   //para que cuando se crea el producto, se identifique que el valor sea 1
-            cart.push(product)  //se pushea el producto dentro del array de cart, el cual está en el objeto creado
             this.products.push(carrito);    //se pushea el array de this.products al carrito, para que lo muestre como un objeto dentro del array
             this.updateCarts(); //se escriben los datos en el this.path
             return;
