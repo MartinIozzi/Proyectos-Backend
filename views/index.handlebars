@@ -1,0 +1,23 @@
+<link rel="stylesheet" href="../public/css/style.css">
+
+<div>
+    <h1>Lista de productos</h1>
+    <div id='listaProductos'>
+        {{#each products}}
+        <h2>{{name}}</h2>
+    </div>
+</div>
+
+<!--
+    "name": "funda iphone",
+    "description": "verde",
+    "price": "10",
+    "code": "1234",
+    "stock": "25",
+    "type": "phone",
+    "img": "123.png",
+    "id": "2"
+-->
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="js/index.js"></script>

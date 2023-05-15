@@ -11,7 +11,7 @@ class CartManager {
                 this.path,
                 JSON.stringify([]))
         }else{
-            this.products = JSON.parse(fs.readFileSync(this.path, 'utf-8'))
+            //this.products = JSON.parse(fs.readFileSync(this.path, 'utf-8'))
         }
         let index = this.products.length - 1   //detecta el ultimo index y asigna la id del mismo.
         if(index >= 0){
@@ -23,16 +23,35 @@ class CartManager {
         await fs.promises.writeFile(this.path, JSON.stringify(this.products));
     }
 
-    async getCart (){
+    async getCart(){
         try {
-            return JSON.parse(await fs.promises.readFile(this.path, 'utf-8'));
+            const readCart = await fs.promises.readFile(this.path, 'utf-8');
+            return JSON.parse(readCart);
         } catch (e) {
             console.log(500, e);
         }
     };
 
-    async addCart(cartId, product){
-        let index = this.products.findIndex(carrito => carrito.id == cartId);   //busca la id dentro de this.products, e iguala el valor de la id dentro del mismo a cartId
+    async addCart(){
+        try {
+            const readCart = this.getCart()
+            this.id++;
+            let carrito = {
+                cart: [],
+                id: this.id
+            }
+            readCart.push(carrito);
+            this.updateCarts();
+            return readCart;
+        }
+        catch(e) {
+            console.log(e);
+        }
+    };
+
+    addToCart(cartId, product){
+        try {
+            let index = this.products.findIndex(carrito => carrito.id == cartId);   //busca la id dentro de this.products, e iguala el valor de la id dentro del mismo a cartId
         if(index == -1){    //verificamos, si el carrito no existe, crea un array que contenga esos datos
             this.id++;
             let carrito = {
@@ -59,6 +78,9 @@ class CartManager {
         this.products[index].cart[indexProducto].quantity = cantidad    /* toma el array de this.products y el array seleccionado por la variable index; luego toma cart, 
         selecciona la id del producto y eso lo iguala a la cantidad que se le sumó en la variable anterior */
         this.updateCarts(); //escribe los productos dentro del json.
+        } catch (e) {
+            console.log(e);
+        }
     }
 }
 
