@@ -52,20 +52,22 @@ class ProductManager {
     }
 
     async pushProducts(addedProduct){
-            //let productList = JSON.parse(await fs.promises.readFile(this.path, "utf-8"));
+        try {
             this.addProduct(addedProduct)
-            //productList.push(addedProduct);
             await fs.promises.writeFile(this.path,
                 JSON.stringify(this.products))
-                //fs.promises.appendFile(this.path, JSON.stringify(addedProduct));
+        } catch (e) {
+            console.log(e);
+        }
+
     }
     //Este metodo, seleccionaría una id, escrita al final del código, la cual permita filtrar por ID los productos.
     async getProductByID(id){
         try {
             const actualProducts = await this.getProducts()
             return actualProducts.find(element => element.id == id)
-        } catch (error) {
-            console.log(error);
+        } catch (e) {
+            console.log(e);
         }
 
     }
@@ -73,8 +75,13 @@ class ProductManager {
     //Este metodo permite leer el codigo, del array que contiene la lista de los productos.
 
     readCodes(){
-        let readCode = JSON.parse(fs.readFileSync(this.path, 'utf-8'));
-        return readCode;
+        try {
+            let readCode = JSON.parse(fs.readFileSync(this.path, 'utf-8'));
+            return readCode;
+        } catch (e) {
+            console.log(e);  
+        }
+
     }
 
     //Este metodo, permite, seleccionando la ID del producto, poder sobreescribir los datos de uno seleccionado.
@@ -86,8 +93,8 @@ class ProductManager {
             this.products[index] = product;
             fs.writeFileSync(this.path, JSON.stringify(this.products));
             if(index == -1){return console.log('Error al actualizar producto: No existe la ID: ' + id)}
-        } catch (error) {
-            console.log("No existe la ID: " + id)
+        } catch (e) {
+            console.log("No existe la ID: " + id, e)
         }
     }
 

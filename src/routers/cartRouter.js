@@ -6,7 +6,7 @@ const cartManager = new CartManager();
 
 cartRouter.post('/',async (req, res) => {
     try {
-        res.status(201).send(await cartManager.addCart())
+        res.status(201).send(await cartManager.addCart())   //antes tenia el getCart, como para leer el codigo a la hora de llamarlo desde thunderclient, asi que arreglé la función y lo cambié por addCart para que se mande a la pagina.
     } catch (e) {
         res.status(400).send({e});
     }

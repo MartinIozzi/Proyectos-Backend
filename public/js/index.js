@@ -1,4 +1,4 @@
-const socket = io();
+//const socket = io();
 
 /*se le llama por convención "io" por el "socket.io"; 
 la linea es la cual permite cuardar el io dentro de la constante, 

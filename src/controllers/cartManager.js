@@ -19,11 +19,15 @@ class CartManager {
         }
     }
 
-    async updateCarts () {
-        await fs.promises.writeFile(this.path, JSON.stringify(this.products));
+    async updateCarts () {  //se escribe el carrito en el JSON del carts.json
+        try {
+            await fs.promises.writeFile(this.path, JSON.stringify(this.products));
+        } catch (e) {
+            console.log(e);
+        }
     }
 
-    async getCart(){
+    async getCart(){    //se leen los carritos
         try {
             const readCart = await fs.promises.readFile(this.path, 'utf-8');
             return JSON.parse(readCart);
@@ -32,17 +36,17 @@ class CartManager {
         }
     };
 
-    async addCart(){
+    async addCart(){    //agrega carritos en el JSON
         try {
-            let cartArray = this.products
-            this.id++;
-            let carrito = {
+            let cartArray = this.products   //creo una variable que contenga el this.products
+            this.id++;  //id que se autoincrementa
+            let carrito = {     //variable para crear un carrito vacio, con su respectiva id
                 cart: [],
                 id: this.id
             }
-            cartArray.push(carrito);
-            this.updateCarts();
-            return cartArray;
+            cartArray.push(carrito);    //se pushea dentro del this.products el carrito
+            this.updateCarts(); //se escribe en el JSON los datos actualizados
+            return cartArray;   //se retorna el array de carritos
         }
         catch(e) {
             console.log("error en el addCart", e);
